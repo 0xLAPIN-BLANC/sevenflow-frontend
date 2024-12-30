@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Seven Flow',
       home: MyHomePage2(),
     );
   }
@@ -45,34 +45,35 @@ class _MyHomePage2State extends State<MyHomePage2> {
 
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('App Bar')
-        ),
-
-        body: Column(
-          children: [
-            Row(
-              children: [
-                TextButton(
-                    onPressed: () {
-                      setState(() {
-                        themeMode = ThemeMode.light;
-                      });
-                    }
-                    , child: const Text('Light')
-                ),
-
-                TextButton(
-                    onPressed: () {
-                      setState(() {
-                        themeMode = ThemeMode.dark;
-                      });
-                    }
-                    , child: const Text('Dark')
-                )
-              ],
+          title: const Text('Seven Flow'),
+          centerTitle: true,
+          toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)
             )
+          ),
+
+          actions: <Widget>[
+            IconButton(
+                onPressed: (){
+                  setState(() {
+                    themeMode == ThemeMode.dark
+                        ? themeMode = ThemeMode.light
+                        : themeMode = ThemeMode.dark;
+                  });
+                },
+                icon: Icon(
+                  themeMode == ThemeMode.dark
+                    ? Icons.dark_mode
+                    : Icons.light_mode
+                ))
           ],
+          backgroundColor: Colors.purple,
         ),
+
+        body: const Center(child: Text('Hello world'))
       ),
     );
   }
