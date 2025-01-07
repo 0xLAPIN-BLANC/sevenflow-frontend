@@ -1,80 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:seven_flow/Theme/theme.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  ThemeMode _themeMode = ThemeMode.system;
+  void _toggleThemeMode() {
+    setState(() {
+      _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+}
+
   @override
   Widget build(BuildContext context) {
+    final materialTheme = MaterialTheme(const TextTheme());
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Seven Flow',
-      home: MyHomePage2(),
+
+      theme: materialTheme.light(),
+      darkTheme: materialTheme.dark(),
+      themeMode: _themeMode,
+
+      home: MyHomePage(
+        themeMode: _themeMode,
+        onThemeModeToggle: _toggleThemeMode
+      ),
     );
   }
 }
 
-class MyHomePage2 extends StatefulWidget {
-  const MyHomePage2({super.key});
+class MyHomePage extends StatelessWidget {
+  final ThemeMode themeMode;
+  final VoidCallback onThemeModeToggle;
 
-  @override
-  State<MyHomePage2> createState() => _MyHomePage2State();
-}
-
-class _MyHomePage2State extends State<MyHomePage2> {
-
-  ThemeMode themeMode = ThemeMode.system;
+  const MyHomePage({
+    super.key,
+    required this.themeMode,
+    required this.onThemeModeToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(
-        useMaterial3: true
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark
-      ),
-      themeMode: themeMode,
-
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Seven Flow'),
-          centerTitle: true,
-          toolbarOpacity: 0.8,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)
-            )
+        backgroundColor: Theme.of(context).colorScheme.surface,
+
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: Text(
+                'Seven Flow',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary
+              ),
+            ),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(25),
+                    bottomLeft: Radius.circular(25)
+                )
+            ),
+
+            actions: <Widget>[
+              IconButton(
+                  onPressed: onThemeModeToggle,
+                  icon: Icon(
+                      themeMode == ThemeMode.dark
+                          ? Icons.dark_mode
+                          : Icons.light_mode,
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ))
+            ]
           ),
 
-          actions: <Widget>[
-            IconButton(
-                onPressed: (){
-                  setState(() {
-                    themeMode == ThemeMode.dark
-                        ? themeMode = ThemeMode.light
-                        : themeMode = ThemeMode.dark;
-                  });
-                },
-                icon: Icon(
-                  themeMode == ThemeMode.dark
-                    ? Icons.dark_mode
-                    : Icons.light_mode
-                ))
-          ],
-          backgroundColor: Colors.purple,
-        ),
-
-        body: const Center(child: Text('Hello world'))
+          body: Center(
+              child: Text(
+                'Hello world',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface
+                ),
+              )
+          ),
       ),
     );
   }
 }
+
