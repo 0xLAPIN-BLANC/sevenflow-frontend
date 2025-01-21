@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:calendar_view/calendar_view.dart';
+
 import 'package:seven_flow/Theme/theme.dart';
 import 'package:seven_flow/Theme/util.dart';
-import 'package:calendar_view/calendar_view.dart';
+
+import 'package:seven_flow/Calendar/CalendarWeekDayBuilder.dart';
+import 'package:seven_flow/Calendar/CalendarCellBuilder.dart';
+import 'package:seven_flow/Calendar/CalendarHeaderBuilder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +57,7 @@ class MyHomePage extends StatelessWidget {
   final ThemeMode themeMode;
   final VoidCallback onThemeModeToggle;
   final GlobalKey<MonthViewState> _calendarKey = GlobalKey<MonthViewState>();
+  final List<String> idxToDay = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
   MyHomePage({
     super.key,
@@ -100,96 +106,39 @@ class MyHomePage extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.only(top: 20.0, left: 40),
             child: MonthView(
-              width: 700,
+              width: 750,
               key: _calendarKey,
               cellAspectRatio: 1.1,
               showBorder: false,
-              cellBuilder: (date, event, isToday, isInMonth, hideDaysNotInMonth) => Padding(
-                padding: EdgeInsets.all(2),
-                child: isInMonth
-                  ?Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                      border: isToday
-                        ? Border.all( color: Theme.of(context).colorScheme.onSurface)
-                        : null
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, right: 16.0),
-                          child: Text(
-                            date.day.toString(),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontFamily: Theme.of(context).textTheme.headlineLarge?.fontFamily,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                )
-                : null
+
+              cellBuilder: (date, event, isToday, isInMonth, hideDaysNotInMonth) => MakeCellBuilder(
+                date: date,
+                event: event,
+                isToday: isToday,
+                isInMonth: isInMonth,
+                hideDaysNotInMonth: hideDaysNotInMonth,
+                surfaceColor: Theme.of(context).colorScheme.surfaceContainer,
+                selectedColor: Theme.of(context).colorScheme.onSurface,
+                fontColor: Theme.of(context).colorScheme.onSurface,
+                fontFamily: Theme.of(context).textTheme.headlineLarge?.fontFamily,
               ),
 
-              headerBuilder: (date) => Row(
-                spacing: 12,
-                children: [
-                  Spacer(),
-
-                  IconButton(
-                    onPressed: () => _calendarKey.currentState!.previousPage(),
-                    icon: Icon(
-                      Icons.chevron_left_rounded,
-                      color: Theme.of(context).colorScheme.onSecondary,
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                    ),
-                  ),
-
-                  TextButton(
-                      onPressed: () => _calendarKey.currentState?.animateToMonth(DateTime.now()),
-                      style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                      ),
-                      child: Text(
-                          'Today',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              fontFamily: Theme.of(context).textTheme.headlineLarge?.fontFamily,
-                              fontSize: 24
-                          )
-                      )
-                  ),
-
-                  IconButton(
-                    onPressed: () => _calendarKey.currentState!.nextPage(),
-                    icon: Icon(
-                        Icons.chevron_right_rounded,
-                        color: Theme.of(context).colorScheme.onSecondary,
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.secondary)
-                    ),
-                  ),
-                ],
+              headerBuilder: (date) => MakeHeaderBuilder(
+                date: date,
+                calendarKey: _calendarKey,
+                mainColor: Theme.of(context).colorScheme.secondary,
+                onMainColor: Theme.of(context).colorScheme.onSecondary,
+                fontColor: Theme.of(context).colorScheme.secondary,
+                fontFamily: Theme.of(context).textTheme.headlineLarge?.fontFamily,
+                fontSize: 18,
               ),
 
-              weekDayBuilder: (date) => Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20,horizontal: 2),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Theme.of(context).colorScheme.outline
-                    ),
-                    child: Center(
-                      child: Text(date.toString(), maxLines: 1,),
-                    ),
-                  ),
-              ),
+              weekDayBuilder: (date) => MakeDayOfWeek(
+                dayIdx: date,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                textColor: Theme.of(context).colorScheme.onSurface,
+                textFontFamily: Theme.of(context).textTheme.headlineLarge?.fontFamily,
+              )
             ),
           )
       )
