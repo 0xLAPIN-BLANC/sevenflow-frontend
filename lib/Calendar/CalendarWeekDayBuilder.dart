@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MakeDayOfWeek extends StatelessWidget {
-  final dayIdx;
+  final dateTime;
   final backgroundColor;
   final textColor;
   final textFontFamily;
@@ -10,7 +11,7 @@ class MakeDayOfWeek extends StatelessWidget {
 
   MakeDayOfWeek({
     super.key,
-    required this.dayIdx,
+    required this.dateTime,
     required this.backgroundColor,
     required this.textColor,
     required this.textFontFamily
@@ -19,7 +20,7 @@ class MakeDayOfWeek extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20,horizontal: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
@@ -28,7 +29,7 @@ class MakeDayOfWeek extends StatelessWidget {
 
         child: Center(
           child: Text(
-            idxToDay[dayIdx],
+            '${DateFormat.E().format(dateTime)}, ${dateTime.day.toString()}',
             maxLines: 1,
             style: TextStyle(
               color: textColor,

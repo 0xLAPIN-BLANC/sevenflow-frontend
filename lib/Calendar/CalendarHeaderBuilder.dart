@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class MakeHeaderBuilder extends StatelessWidget {
-  final date;
+  final startDate;
+  final endDate;
   final calendarKey;
   final mainColor;
   final onMainColor;
@@ -13,7 +14,8 @@ class MakeHeaderBuilder extends StatelessWidget {
 
   const MakeHeaderBuilder({
     super.key,
-    required this.date,
+    required this.startDate,
+    required this.endDate,
     required this.calendarKey,
     required this.mainColor,
     required this.onMainColor,
@@ -37,7 +39,7 @@ class MakeHeaderBuilder extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2),
               child: Text(
-                  '${DateFormat.MMMM().format(date)}, ${date.year}',
+                  '${DateFormat.MMMM().format(startDate)}, ${startDate.year}',
                   style: TextStyle(
                       color: fontColor,
                       fontFamily: fontFamily,
@@ -62,7 +64,7 @@ class MakeHeaderBuilder extends StatelessWidget {
         ),
 
         TextButton(
-            onPressed: () => calendarKey.currentState?.animateToMonth(DateTime.now()),
+            onPressed: () => calendarKey.currentState?.animateToWeek(DateTime.now()),
             style: ButtonStyle(
                 backgroundColor: WidgetStatePropertyAll(mainColor)
             ),

@@ -37,6 +37,8 @@ dependencies:
   google_fonts: ^6.2.1
   calendar_view: ^1.4.0
   intl: ^0.20.1
+  flutter_layout_grid: ^2.0.7
+  week_number: ^1.1.1
 
 dev_dependencies:
   flutter_test:
