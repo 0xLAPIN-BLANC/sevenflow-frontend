@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MakeCellBuilder extends StatelessWidget {
-  final date;
+  final DateTime date;
   final event;
-  final isToday;
-  final isInMonth;
+  final bool isToday;
+  final bool isInMonth;
   final hideDaysNotInMonth;
-  final surfaceColor;
-  final selectedColor;
-  final fontColor;
-  final fontFamily;
+  final Color surfaceColor;
+  final Color selectedColor;
+  final Color fontColor;
+  final String? fontFamily;
 
   const MakeCellBuilder({
     super.key,
